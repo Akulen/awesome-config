@@ -126,4 +126,8 @@ theme.fg_widget_clock = "#B58900"
 theme.fg_widget_value = "#E0E0D1"
 theme.fg_widget_value_important = "#CB4B16"
 
+-- {{{ Lain
+theme.useless_gap_width = 10
+-- }}}
+
 return theme
