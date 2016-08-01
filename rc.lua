@@ -1,3 +1,6 @@
+-- Load config
+local config = require("config/base")
+
 -- {{{ Standard awesome library
 -- Gear
 	local gears = require("gears")
@@ -16,6 +19,7 @@
 	local naughty = require("naughty")
 -- Menubar
 	local menubar = require("menubar")
+	menubar.utils.terminal = config.terminal -- Set the terminal for applications that require it
 -- Vicious
 	local vicious = require("vicious")
 -- Lain
@@ -37,9 +41,6 @@
 
 -- Check errors
 require("errors")
-
--- Load config
-local config = require("config/base")
 
 -- Config tags
 local tags = require("config/tags") 
@@ -71,10 +72,6 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
 
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
-
--- Menubar configuration
-menubar.utils.terminal = config.terminal -- Set the terminal for applications that require it
--- }}}
 
 -- {{{ Wibox
 
