@@ -67,8 +67,11 @@ theme.taglist_squares_unsel	= theme.default_themes_path.."/zenburn/taglist/squar
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
-theme.awesome_icon		= theme.default_themes_path.."/zenburn/awesome-icon.png"
-theme.menu_submenu_icon	= theme.default_themes_path.."/default/submenu.png"
+theme.awesome_icon		= theme.default_themes_path .. "/zenburn/awesome-icon.png"
+theme.menu_submenu_icon	= theme.default_themes_path .. "/default/submenu.png"
+theme.menu_launch		= pathToConfig .. "themes/solarized-dark/icons/launch.png"
+theme.menu_terminal		= pathToConfig .. "themes/solarized-dark/icons/terminal.png"
+theme.menu_vivaldi		= pathToConfig .. "themes/solarized-dark/icons/vivaldi.png"
 theme.menu_height		= 15
 theme.menu_width		= 100
 

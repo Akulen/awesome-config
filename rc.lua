@@ -13,13 +13,9 @@ local config = require("config/base")
 -- Theme handling library
 	local beautiful = require("beautiful")
 	-- Themes define colours, icons, font and wallpapers.
-	-- beautiful.init("~/.config/awesome/themes/awesome-solarized/dark/theme.lua")
-	beautiful.init("~/.config/awesome/themes/solarized-dark/theme.lua")
+	beautiful.init(config.themepath)
 -- Notification library
 	local naughty = require("naughty")
--- Menubar
-	local menubar = require("menubar")
-	menubar.utils.terminal = config.terminal -- Set the terminal for applications that require it
 -- Vicious
 	local vicious = require("vicious")
 -- Lain
@@ -42,9 +38,6 @@ local config = require("config/base")
 -- Check errors
 require("errors")
 
--- Config tags
-local tags = require("config/tags") 
-
 -- {{{ Wallpaper
 	if beautiful.wallpaper then
 	    for s = 1, screen.count() do
@@ -56,22 +49,11 @@ local tags = require("config/tags")
 	wp.timer:start()
 -- }}}
 
--- {{{ Menu
--- Create a laucher widget and a main menu
-myawesomemenu = {
-   { "manual", config.terminal .. " -e man awesome" },
-   { "edit config", config.editor_cmd .. " " .. awesome.conffile },
-   { "restart", awesome.restart },
-   { "quit", awesome.quit }
-}
+-- Tags
+local tags = require("modules/tags") 
 
-mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                                    { "open terminal", config.terminal }
-                                  }
-                        })
-
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = mymainmenu })
+-- Menu
+local menu = require("modules/menu")
 
 -- {{{ Wibox
 
@@ -263,7 +245,7 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
-    left_layout:add(mylauncher)
+    left_layout:add(menu.launcher)
     left_layout:add(mytaglist[s])
     left_layout:add(mypromptbox[s])
 
@@ -339,7 +321,7 @@ end
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
+    awful.button({ }, 3, function () menu.menu:toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
     awful.button({ }, 5, awful.tag.viewprev)
 ))
@@ -374,7 +356,7 @@ globalkeys = awful.util.table.join(
             awful.client.focus.byidx(-1)
             if client.focus then client.focus:raise() end
 		end, "Focus previous window"),
-    awful.key({ config.modkey,           }, "w", function () mymainmenu:show() end),
+    awful.key({ config.modkey,           }, "w", function () menu.menu:show() end),
 
     -- Layout manipulation
 	keydoc.group("Layout manipulation"),
@@ -438,7 +420,6 @@ globalkeys = awful.util.table.join(
                   awful.util.getdir("cache") .. "/history_eval")
               end),
     -- Menubar
-    -- awful.key({ config.modkey }, "p", function() menubar.show() end),
     awful.key({ config.modkey }, "p", function() awful.util.spawn_with_shell("rofi -show run") end),
 
 	-- Other
