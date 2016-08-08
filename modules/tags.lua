@@ -24,7 +24,7 @@ tags.layouts	=
 -- Define a tag table which hold all screen tags.
 tags.tags	= {}
 for s = 1, screen.count() do
-    -- Each screen has its own tag table.
+    -- Each screen has its own tag table - The icons require awesome font and ionicon font.
     tags.tags[s] = awful.tag({ '', '', 3, 4, 5, 6, 7, 8, '' }, s, tags.layouts[1])
 end
 -- }}}

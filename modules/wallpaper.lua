@@ -1,5 +1,5 @@
-local gears = require("gears")
-local config = require("config/base")
+local gears		= require("gears")
+local config	= require("config/base")
 
 local wp = {}
 

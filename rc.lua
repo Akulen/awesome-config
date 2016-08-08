@@ -55,109 +55,8 @@ local tags = require("modules/tags")
 -- Menu
 local menu = require("modules/menu")
 
--- {{{ Wibox
-
---{{-- Time and Date Widget }} --
-tdwidget = wibox.widget.textbox()
-local strf = '<span font="' .. config.font .. '" color="#EEEEEE" background="#777E76">%b %d %I:%M</span>'
-vicious.register(tdwidget, vicious.widgets.date, strf, 20)
-
-clockicon = wibox.widget.imagebox()
-clockicon:set_image(beautiful.clock)
-
---{{ Net Widget }} --
-netwidget = wibox.widget.textbox()
-vicious.register(netwidget, vicious.widgets.net, function(widget, args)
-    local interface = ""
-    if args["{wlp2s0 carrier}"] == 1 then
-        interface = "wlp2s0"
-    elseif args["{enp0s25 carrier}"] == 1 then
-        interface = "enp0s25"
-    else
-        return ""
-    end
-    return '<span background="#C2C2A4" font="' .. config.font .. '"> <span font ="' .. config.font .. '" color="#FFFFFF">' .. args["{" .. interface .. " down_kb}"] .. 'kbps' .. '</span></span>' end, 10)
-
----{{---| Wifi Signal Widget |-------
-neticon = wibox.widget.imagebox()
-vicious.register(neticon, vicious.widgets.wifi, function(widget, args)
-    local sigstrength = tonumber(args["{link}"])
-    if sigstrength > 69 then
-        neticon:set_image(beautiful.nethigh)
-    elseif sigstrength > 40 and sigstrength < 70 then
-        neticon:set_image(beautiful.netmedium)
-    else
-        neticon:set_image(beautiful.netlow)
-    end
-end, 120, 'wlp3s0')
-
-
---{{ Battery Widget }} --
-baticon = wibox.widget.imagebox()
-baticon:set_image(beautiful.baticon)
-
-batwidget = wibox.widget.textbox()
-vicious.register( batwidget, vicious.widgets.bat, '<span background="#92B0A0" font="' .. config.font .. '"><span font="' .. config.font .. '" color="#FFFFFF" background="#92B0A0">$1$2% </span></span>', 30, "BAT0" )
---{{---| File Size widget |-----
-fswidget = wibox.widget.textbox()
-
-vicious.register(fswidget,
-	vicious.widgets.fs,
-	'<span background="'..beautiful.colors.dviolet..'" font="' .. config.font .. '" color="#EEEEEE">  ${/home used_gb}/${/home avail_gb} GB </span>',
-	800)
-
-----{{--| Volume / volume icon |----------
-volume = wibox.widget.textbox()
-vicious.register(volume, vicious.widgets.volume,
-'<span background="#4B3B51" font="' .. config.font .. '"><span font="' .. config.font .. '" color="#EEEEEE"> Vol:$1 </span></span>', 0.3, "Master")
-
-volumeicon = wibox.widget.imagebox()
-vicious.register(volumeicon, vicious.widgets.volume, function(widget, args)
-    local paraone = tonumber(args[1])
-
-    if args[2] == "♩" or paraone == 0 then
-        volumeicon:set_image(beautiful.mute)
-    elseif paraone >= 67 and paraone <= 100 then
-        volumeicon:set_image(beautiful.volhi)
-    elseif paraone >= 33 and paraone <= 66 then
-        volumeicon:set_image(beautiful.volmed)
-    else
-        volumeicon:set_image(beautiful.vollow)
-    end
-
-end, 0.3, "Master")
-
---{{---| CPU / sensors widget |-----------
-cpuwidget = wibox.widget.textbox()
-vicious.register(cpuwidget, vicious.widgets.cpu,
-'<span background="'..beautiful.colors.violet..'" font="' .. config.font .. '"> <span font="' .. config.font .. '" color="'..beautiful.colors.base03..'">$1%</span></span>', 5)
-
-cpuicon = wibox.widget.imagebox()
-cpuicon:set_image(beautiful.cpuicon)
-
---{{--| MEM widget |-----------------
-memwidget = wibox.widget.textbox()
-
-vicious.register(memwidget, vicious.widgets.mem, '<span background="#777E76" font="' .. config.font .. '"> <span font="' .. config.font .. '" color="#EEEEEE" background="#777E76">$1% $2MB </span></span>', 20)
-memicon = wibox.widget.imagebox()
-memicon:set_image(beautiful.mem)
-
---{{--| Mail widget |---------
--- mailicon = wibox.widget.imagebox()
--- 
--- vicious.register(mailicon, vicious.widgets.gmail, function(widget, args)
---     local newMail = tonumber(args["{count}"])
---     if newMail > 0 then
---         mailicon:set_image(beautiful.mail)
---     else
---         mailicon:set_image(beautiful.mailopen)
---     end
--- end, 15)
-
--- to make GMail pop up when pressed:
--- mailicon:buttons(awful.util.table.join(awful.button({ }, 1,
--- function () awful.util.spawn_with_shell(browser .. " gmail.com") end)))
-
+-- Widgets
+local widgets = require("modules/widgets")
 
 -- Create a wibox for each screen and add it
 mywiboxtop = {}
@@ -209,18 +108,6 @@ mytasklist.buttons = awful.util.table.join(
                                               awful.client.focus.byidx(-1)
                                               if client.focus then client.focus:raise() end
                                           end))
-
-datewidget = wibox.widget.textbox()
-vicious.register(datewidget,
-				 vicious.widgets.date,
-				 "<span font='" .. config.font .. "' color='"..beautiful.colors.base03.."' background='"..beautiful.colors.cyan.."'>%b %d %R</span>",
-				 20)
-
-memwidget2 = wibox.widget.textbox()
-vicious.register(memwidget2, vicious.widgets.mem, "<span background='"..beautiful.colors.violet.."' font='" .. config.font .. "' color='"..beautiful.colors.base03.."'>$1% ($2MB/$3MB)</span>", 13)
-
-batterywidget = wibox.widget.textbox()
-vicious.register(batterywidget, vicious.widgets.bat, "<span background='"..beautiful.colors.blue.."' font='" .. config.font .. "' color='"..beautiful.colors.base03.."'>$1$2%</span>", 10, "BAT0")
 
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
@@ -280,20 +167,20 @@ arr9:set_image(beautiful.arr9)
 
 	local info = wibox.layout.fixed.horizontal()
 	info:add(arr4)
-	info:add(fswidget)
+	info:add(widgets.fswidget)
 	info:add(arr3)
-	info:add(cpuwidget)
-	info:add(cpuicon)
+	info:add(widgets.cpuwidget)
+	info:add(widgets.cpuicon)
 	info:add(arr2)
 	info:add(APW)
 	info:add(arr1)
-	info:add(datewidget)
+	info:add(widgets.datewidget)
 	info:add(rra1)
-	info:add(baticon)
-    info:add(batterywidget)
+	info:add(widgets.baticon)
+    info:add(widgets.batterywidget)
 	info:add(rra2)
-	info:add(memicon)
-	info:add(memwidget2)
+	info:add(widgets.memicon)
+	info:add(widgets.memwidget2)
 	info:add(rra3)
     if s == 1 then info:add(wibox.widget.systray()) end
 	info:add(rra4)
@@ -301,8 +188,8 @@ arr9:set_image(beautiful.arr9)
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
 	-- right_layout:add(mailicon)
-	right_layout:add(neticon)
-	right_layout:add(netwidget)
+	-- right_layout:add(widgets.neticon)
+	-- right_layout:add(widgets.netwidget)
     right_layout:add(mylayoutbox[s])
 	
     -- Now bring it all together (with the tasklist in the middle)
