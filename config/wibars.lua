@@ -1,4 +1,4 @@
--- TODO : split declarative declarations of the wibar and button definitions into separate config files and move back widgets.lua to modules/
+-- TODO : split declarative declarations of the wibar and button definitions into separate config files and move back wibars.lua to modules/
 
 local config		= require("config/base")
 local menu			= require("config/menu")

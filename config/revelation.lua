@@ -1,0 +1,3 @@
+local revelation	= {}
+
+return revelation
