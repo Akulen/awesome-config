@@ -7,10 +7,12 @@ local tags			= require("config/tags")
 local awful			= require("awful")
 local beautiful		= require("beautiful")
 local gears			= require("gears")
+local naughty		= require("naughty")
 local vicious		= require("vicious")
 local wibox			= require("wibox")
 
 local APW			= require("modules/apw/widget")
+local calendar		= require("modules/calendar35/init")
 
 local ip			= require("widgets/ip")
 
@@ -24,48 +26,55 @@ end
 widgets.wibar_top			= {}
 widgets.taglist				= {}
 widgets.taglist.buttons 	= awful.util.table.join(
-	awful.button({ },				1,	awful.tag.viewonly),
-	awful.button({ config.modkey },	1,	awful.client.movetotag),
-	awful.button({ },				3,	awful.tag.viewtoggle),
-	awful.button({ config.modkey },	3,	awful.client.toggletag),
-	awful.button({ },				4,	function(t)
-		awful.tag.viewnext(awful.tag.getscreen(t))
-	end),
-	awful.button({ },				5,	function(t)
-		awful.tag.viewprev(awful.tag.getscreen(t))
-	end)
+	awful.button({             }, 1, awful.tag.viewonly),
+	awful.button({config.modkey}, 1, awful.client.movetotag),
+	awful.button({             }, 3, awful.tag.viewtoggle),
+	awful.button({config.modkey}, 3, awful.client.toggletag),
+	awful.button({             }, 4,
+		function(t)
+			awful.tag.viewnext(awful.tag.getscreen(t))
+		end),
+	awful.button({             }, 5,
+		function(t)
+			awful.tag.viewprev(awful.tag.getscreen(t))
+		end)
 )
 widgets.promptbox			= {}
 widgets.infobar				= {}
 widgets.wibar_bot			= {}
 widgets.tasklist			= {}
 widgets.tasklist.buttons	= awful.util.table.join(
-	awful.button({ }, 1, function (c)
-		if c == client.focus then
-			c.minimized = true
-		else
-			-- Without this, the following :isvisible() makes no sense
-			c.minimized = false
-			if not c:isvisible() then awful.tag.viewonly(c:tags()[1]) end
-			-- This will also un-minimize the client, if needed
-			client.focus = c
-			c:raise()
-		end
-	end),
-	awful.button({ }, 3, function ()
-		if instance then
-			instance:hide()
-			instance = nil
-		else instance = awful.menu.clients({ theme = { width = 250 } }) end
-	end),
-	awful.button({ }, 4, function ()
-		awful.client.focus.byidx(1)
-		if client.focus then client.focus:raise() end
-	end),
-	awful.button({ }, 5, function ()
-		awful.client.focus.byidx(-1)
-		if client.focus then client.focus:raise() end
-	end))
+	awful.button({             }, 1,
+		function (c)
+			if c == client.focus then
+				c.minimized = true
+			else
+				-- Without this, the following :isvisible() makes no sense
+				c.minimized = false
+				if not c:isvisible() then awful.tag.viewonly(c:tags()[1]) end
+				-- This will also un-minimize the client, if needed
+				client.focus = c
+				c:raise()
+			end
+		end),
+	awful.button({             }, 3,
+		function ()
+			if instance then
+				instance:hide()
+				instance = nil
+			else instance = awful.menu.clients({ theme = { width = 250 } }) end
+		end),
+	awful.button({             }, 4,
+		function ()
+			awful.client.focus.byidx(1)
+			if client.focus then client.focus:raise() end
+		end),
+	awful.button({             }, 5,
+		function ()
+			awful.client.focus.byidx(-1)
+			if client.focus then client.focus:raise() end
+		end)
+)
 
 for s = 1, screen.count() do
 	widgets.promptbox[s]	= awful.widget.prompt()
@@ -96,7 +105,8 @@ for s = 1, screen.count() do
 													{
 														vicious	= {vicious.widgets.date, "%b %d %R", 20},
 														font	= config.font,
-														widget	= wibox.widget.textbox
+														widget	= wibox.widget.textbox,
+														id		= "datewidget"
 													},
 													left	= 10,
 													right	= 10,
@@ -218,6 +228,7 @@ for s = 1, screen.count() do
 	    layout	= wibox.layout.ratio.horizontal,
 	}
 	widgets.wibar_top[s].topbar:inc_ratio(2, 0.3)
+	calendar.addCalendarToWidget(widgets.wibar_top[s]:get_children_by_id("datewidget")[1])
 
 	widgets.wibar_bot[s]	= awful.wibar({ position = "bottom", screen = s })
 	widgets.wibar_bot[s] : setup {
@@ -230,6 +241,7 @@ for s = 1, screen.count() do
 		nil,
 		layout = wibox.layout.align.horizontal
 	}
+
 end
 
 return widgets

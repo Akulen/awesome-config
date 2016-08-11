@@ -32,6 +32,9 @@ local config			= require("config/base")
 	require("modules/keydoc")
 -- Sound library
 	local APW			= require("modules/apw/widget")
+	APWTimer = gears.timer({ timeout = 0.5 }) -- set update interval in s
+	APWTimer:connect_signal("timeout", APW.Update)
+	APWTimer:start()
 -- Wallpaper
 	local wp			= require("modules/wallpaper")
 	if beautiful.wallpaper then
@@ -177,10 +180,6 @@ client.connect_signal("unfocus",
 	end
 )
 -- }}}
-
-APWTimer = gears.timer({ timeout = 0.5 }) -- set update interval in s
-APWTimer:connect_signal("timeout", APW.Update)
-APWTimer:start()
 
 -- Startup command /!\ MOVE TO .xinitrc
 
