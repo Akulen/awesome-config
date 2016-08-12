@@ -30,7 +30,7 @@ theme.colors.dviolet	= "#4B3B51"
 pathToConfig				= config.home .. "/.config/awesome/"
 theme.default_themes_path	= "/usr/share/awesome/themes"
 
-theme.font	= "Terminus 9"
+theme.font	= "Inconsolata 9"
 
 theme.bg_normal		= theme.colors.base3
 theme.bg_focus		= theme.colors.base1

@@ -13,6 +13,7 @@ local wibox			= require("wibox")
 
 local APW			= require("modules/apw/widget")
 local calendar		= require("modules/calendar35/init")
+local orglendar		= require("modules/orglendar")
 
 local ip			= require("widgets/ip")
 
@@ -228,7 +229,14 @@ for s = 1, screen.count() do
 	    layout	= wibox.layout.ratio.horizontal,
 	}
 	widgets.wibar_top[s].topbar:inc_ratio(2, 0.3)
-	calendar.addCalendarToWidget(widgets.wibar_top[s]:get_children_by_id("datewidget")[1])
+	--calendar.addCalendarToWidget(widgets.wibar_top[s]:get_children_by_id("datewidget")[1])
+
+	orglendar.files = { -- Specify here all files you want to be parsed, separated by comma.
+		config.home .. "/TODO.org",
+		--config.home .. "/Documents/Notes/work.org",
+    	--config.home .. "/Documents/stuff/home.org"
+	}
+	orglendar.register(widgets.wibar_top[s]:get_children_by_id("datewidget")[1])
 
 	widgets.wibar_bot[s]	= awful.wibar({ position = "bottom", screen = s })
 	widgets.wibar_bot[s] : setup {
