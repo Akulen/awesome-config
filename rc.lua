@@ -74,8 +74,15 @@ awful.rules.rules	= {
 	{	rule		= {class	= "pinentry"},
 		properties	= {floating	= true}
   	},
-	{	rule		= {class	= "gimp"},
-		properties	= {floating	= true}
+	{	rule		= {class	= "Gimp"},
+		except_any	= {role		= {"gimp-image-window", "gimp-file-open"}},
+		properties	= {floating	= false},
+		callback	= awful.client.setslave
+	},
+	{	rule		= {class	= "Gimp"},
+		callback	= function (c) 
+			c.first_tag.layout = lain.layout.centerworkd
+		end
 	},
 	-- Set Vivaldi to always map on tags number 1 of screen 1.
 	{	rule		= {class	= config.browser},
