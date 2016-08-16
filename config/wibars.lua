@@ -192,7 +192,7 @@ for s = 1, screen.count() do
 		awful.button({ }, 5, function () awful.layout.inc(tags.layouts, -1) end)
 	))
 
-	widgets.wibar_top[s]	= awful.wibar({ position = "top", screen = s })
+	widgets.wibar_top[s]	= awful.wibar({ position = "top", screen = s, bg = "#002b3600" })
 	widgets.wibar_top[s] : setup {
 		{
 			{
@@ -238,13 +238,14 @@ for s = 1, screen.count() do
 	}
 	orglendar.register(widgets.wibar_top[s]:get_children_by_id("datewidget")[1])
 
-	widgets.wibar_bot[s]	= awful.wibar({ position = "bottom", screen = s })
+	widgets.wibar_bot[s]	= awful.wibar({ position = "bottom", screen = s, bg = "#002b3600" })
 	widgets.wibar_bot[s] : setup {
 		nil,
 		awful.widget.tasklist(
 			s,
 			awful.widget.tasklist.filter.currenttags,
-			widgets.tasklist.buttons
+			widgets.tasklist.buttons,
+			{ bg_normal = "#002b3600", bg_focus = "#002b3600" }
 		),
 		nil,
 		layout = wibox.layout.align.horizontal

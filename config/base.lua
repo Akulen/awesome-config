@@ -5,7 +5,8 @@ config.revelation		= require("config/revelation")
 config.modkey			= "Mod4"
 
 config.home				= "/home/akulen"
-config.wallpaperfolder	= config.home .. "/Pictures/Backgrounds/"
+config.wallpaperfolder	= config.home .. "/Pictures/tests/plop/"
+--config.wallpaperfolder	= config.home .. "/Pictures/Backgrounds/"
 config.themepath		= config.home .. "/.config/awesome/themes/solarized-dark/theme.lua"
 
 -- Default app
