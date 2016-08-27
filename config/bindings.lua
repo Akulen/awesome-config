@@ -232,6 +232,9 @@ bindings.globalkeys		= awful.util.table.join(
 		awful.key({                        }, "XF86AudioRaiseVolume", APW.Up),
 		awful.key({                        }, "XF86AudioLowerVolume", APW.Down),
 		awful.key({                        }, "XF86AudioMute",        APW.ToggleMute),
+		awful.key({config.modkey           }, "F6", APW.Up),
+		awful.key({config.modkey           }, "F5", APW.Down),
+		awful.key({config.modkey           }, "F4", APW.ToggleMute),
 		awful.key({config.modkey,          }, "F1", keydoc.display)
 )
 
