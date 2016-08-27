@@ -42,7 +42,7 @@ theme.fg_focus	= theme.colors.base03
 theme.fg_urgent	= theme.colors.base3
 
 theme.border_width	= "2"
-theme.border_normal	= theme.bg_normal
+theme.border_normal	= theme.colors.base2
 theme.border_focus	= theme.bg_focus
 theme.border_marked	= theme.bg_urgent
 

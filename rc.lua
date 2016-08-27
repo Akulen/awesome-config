@@ -67,39 +67,39 @@ awful.rules.rules	= {
 			buttons				= bindings.clientbuttons
 		}
 	},
-	{
-		rule		= {class	= "MPlayer"},
-		properties	= {floating	= true}
-	},
-	{	rule		= {class	= "pinentry"},
-		properties	= {floating	= true}
-  	},
-	{	rule		= {class	= "Gimp"},
-		except_any	= {role		= {"gimp-image-window", "gimp-file-open"}},
-		properties	= {floating	= false},
-		callback	= awful.client.setslave
-	},
-	{	rule		= {class	= "Gimp"},
-		callback	= function (c) 
-			c.first_tag.layout = lain.layout.centerworkd
-		end
-	},
-	-- Set Vivaldi to always map on tags number 1 of screen 1.
-	{	rule		= {class	= config.browser},
-		properties	= {tag		= tags.tags[1][1]}
-	},
-	{	rule		= {class	= "Skype"},
-		properties	= {tag		= tags.tags[1][2]}
-	},
-	{	rule		= {class	= "Skype", name = "rigauto - Skype™"},
-		properties	= {floating	= true}
-	},
-	{	rule		= {class	= "discord"},
-		properties	= {tag		= tags.tags[1][2]}
-	},
-	{	rule		= {class	= "Clementine"},
-		properties	= {tag		= tags.tags[1][10]}
-	},
+	--{
+	--	rule		= {class	= "MPlayer"},
+	--	properties	= {floating	= true}
+	--},
+	--{	rule		= {class	= "pinentry"},
+	--	properties	= {floating	= true}
+  	--},
+	--{	rule		= {class	= "Gimp"},
+	--	except_any	= {role		= {"gimp-image-window", "gimp-file-open"}},
+	--	properties	= {floating	= false},
+	--	callback	= awful.client.setslave
+	--},
+	--{	rule		= {class	= "Gimp"},
+	--	callback	= function (c) 
+	--		c.first_tag.layout = lain.layout.centerworkd
+	--	end
+	--},
+	---- Set Vivaldi to always map on tags number 1 of screen 1.
+	--{	rule		= {class	= config.browser},
+	--	properties	= {tag		= tags.tags[1][1][1]}
+	--},
+	--{	rule		= {class	= "Skype"},
+	--	properties	= {tag		= tags.tags[1][1][2]}
+	--},
+	--{	rule		= {class	= "Skype", name = "rigauto - Skype™"},
+	--	properties	= {floating	= true}
+	--},
+	--{	rule		= {class	= "discord"},
+	--	properties	= {tag		= tags.tags[1][1][2]}
+	--},
+	--{	rule		= {class	= "Clementine"},
+	--	properties	= {tag		= tags.tags[1][1][10]}
+	--},
 }
 -- }}}
 
@@ -192,3 +192,4 @@ client.connect_signal("unfocus",
 
 awful.spawn.with_shell("setxkbmap -option compose:ralt")
 awful.spawn.with_shell("xcompmgr -C -f -D 3")
+awful.spawn("xmodmap /home/akulen/.Xmodmap")

@@ -7,6 +7,7 @@ local APW				= require("modules/apw/widget")
 local menu				= require("config/menu")
 local ror				= require("modules/aweror")
 local tags				= require("config/tags")
+local utils				= require("modules/utils")
 local wibars			= require("config/wibars")
 local wp				= require("modules/wallpaper")
 
@@ -22,6 +23,19 @@ bindings.mouse			= awful.util.table.join(
 -- Key bindings
 bindings.globalkeys		= awful.util.table.join(
 	keydoc.group("Tag management"),
+		awful.key({config.modkey, "Control"}, "t",
+			function()
+				local s = awful.screen.focused()
+				--local curTag = s.selected_tag.index
+				for t = 1, 10 do
+					tags.tags[s.index][tags.current][t].activated = false
+					tags.tags[s.index][3 - tags.current][t].activated = true
+				end
+				tags.current = 3 - tags.current
+				--tags.tags[s.index][tags.current][curTag].selected = true
+				tags.tags[s.index][tags.current][1].selected = true
+			end,
+			"Switch tag bars"),
 		awful.key({config.modkey,          }, "Left",   awful.tag.viewprev       , "Next tag"),
 		awful.key({config.modkey,          }, "Right",  awful.tag.viewnext       , "Previous tag"),
 		awful.key({config.modkey,          }, "Escape", awful.tag.history.restore, "Switch to previous tag"),
@@ -127,11 +141,11 @@ bindings.globalkeys		= awful.util.table.join(
 		awful.key({config.modkey,          }, "u", awful.client.urgent.jumpto),
 		awful.key({}, "XF86MonBrightnessDown",
 			function ()
-				awful.util.spawn("xbacklight -dec 10")
+				awful.spawn("xbacklight -dec 10")
 			end),
 		awful.key({}, "XF86MonBrightnessUp",
 			function ()
-				awful.util.spawn("xbacklight -inc 10")
+				awful.spawn("xbacklight -inc 10")
 			end),
 		awful.key({config.modkey,          }, "Tab",
 			function ()
@@ -147,18 +161,33 @@ bindings.globalkeys		= awful.util.table.join(
 	keydoc.group("Misc"),
 		awful.key({config.modkey,          }, "Return",
 			function ()
-				awful.util.spawn(config.terminal)
+				awful.spawn(config.terminal)
 			end),
 		awful.key({config.modkey,          }, "t",
 			function ()
-				awful.util.spawn(config.terminal)
+				awful.spawn(config.terminal)
 			end,
 			"Spawn a terminal"),
 		awful.key({}, "Print",
 			function ()
-				awful.util.spawn("scrot -e 'mv $f ~/screenshots/ 2>/dev/null'")
+				awful.spawn("scrot -e 'mv $f ~/screenshots/ 2>/dev/null'")
 			end),
-		awful.key({config.modkey, "Control"}, "r", awesome.restart, "Restart awesome"),
+		awful.key({config.modkey, "Control"}, "r",
+			function()
+				-- Serialize client tag data
+				--awful.client.property.persist("disp", "string")
+				for _, c in ipairs(client.get()) do
+					local screen = c.screen.index
+					local ctags = {}
+					for i, t in ipairs(c:tags()) do
+						ctags[i] = t.index
+					end
+					c.disp = utils.serialise({screen = screen, tags = ctags})
+				end
+
+				awesome.restart()
+			end,
+			"Restart awesome"),
 		awful.key({config.modkey, "Shift"  }, "q", awesome.quit),
 		awful.key({config.modkey,          }, ";",
 			function ()
@@ -172,9 +201,9 @@ bindings.globalkeys		= awful.util.table.join(
 		awful.key({config.modkey,          }, "o",
 			function ()
 				if config.oneko == false then
-					awful.util.spawn("oneko -rv")
+					awful.spawn("oneko -rv")
 				else
-					awful.util.spawn("killall oneko")
+					awful.spawn("killall oneko")
 				end
 				config.oneko = not config.oneko
 			end, "Oneko toggle"),
@@ -215,8 +244,8 @@ for i = 1, 10 do
 		-- View tag only.
 		awful.key({config.modkey,          }, "#" .. i + 9,
 			function ()
-				local screen = mouse.screen.index
-				local tag = awful.tag.gettags(screen)[i]
+				local screen = mouse.screen
+				local tag = screen.tags[i]
 				if tag then
 					awful.tag.viewonly(tag)
 				end
@@ -234,7 +263,7 @@ for i = 1, 10 do
 		awful.key({config.modkey, "Shift"  }, "#" .. i + 9,
 			function ()
 				if client.focus then
-					local tag = awful.tag.gettags(client.focus.screen)[i]
+					local tag = awful.tag.gettags(client.focus.screen.index)[i]
 					if tag then
 						awful.client.movetotag(tag)
 					end

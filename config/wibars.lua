@@ -52,7 +52,7 @@ widgets.tasklist.buttons	= awful.util.table.join(
 			else
 				-- Without this, the following :isvisible() makes no sense
 				c.minimized = false
-				if not c:isvisible() then awful.tag.viewonly(c:tags()[1]) end
+				if not c:isvisible() then awful.tag.viewonly(c:tags()[1][1]) end
 				-- This will also un-minimize the client, if needed
 				client.focus = c
 				c:raise()

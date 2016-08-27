@@ -24,6 +24,16 @@ local USE_T = true
 
 local aweror = {}
 
+-- Returns true if all pairs in table1 are present in table2
+function aweror.match (table1, table2)
+   for k, v in pairs(table1) do
+      if table2[k] == nil or (table2[k] ~= v and not table2[k]:find(v)) then
+         return false
+      end
+   end
+   return true
+end
+
 function aweror.run_or_raise(cmd, properties)
    local clients = client.get()
    local focused = awful.client.next(0)
@@ -32,7 +42,7 @@ function aweror.run_or_raise(cmd, properties)
    local n = 0
    for i, c in pairs(clients) do
       --make an array of matched clients
-      if match(properties, c) then
+      if aweror.match(properties, c) then
          n = n + 1
          matched_clients[n] = c
          if c == focused then
@@ -61,16 +71,6 @@ function aweror.run_or_raise(cmd, properties)
       return
    end
    awful.util.spawn(cmd)
-end
-
--- Returns true if all pairs in table1 are present in table2
-function match (table1, table2)
-   for k, v in pairs(table1) do
-      if table2[k] == nil or (table2[k] ~= v and not table2[k]:find(v)) then
-         return false
-      end
-   end
-   return true
 end
 
 function genfun(t3)
