@@ -193,9 +193,8 @@ for s = 1, screen.count() do
 	--calendar.addCalendarToWidget(wibars.wibar_top[s]:get_children_by_id("datewidget")[1])
 
 	orglendar.files = { -- Specify here all files you want to be parsed, separated by comma.
-		config.home .. "/TODO.org",
-		--config.home .. "/Documents/Notes/work.org",
-    	--config.home .. "/Documents/stuff/home.org"
+		events = { config.home .. "/events.org" },
+		todo = { config.home .. "/todo.org" },
 	}
 	orglendar.register(wibars.wibar_top[s]:get_children_by_id("datewidget")[1])
 end
