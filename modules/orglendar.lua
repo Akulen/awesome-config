@@ -111,8 +111,8 @@ local function parse_todo(files)
 						end
 
 						local len = string.len(task_name) + string.len(task_tags)
-						if (len > data.maxlen) then
-							data.maxlen = len
+						if (len > ldata.maxlen) then
+							ldata.maxlen = len
 						end
 
 						table.insert(ldata.tasks, { name = task_name,
