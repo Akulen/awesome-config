@@ -5,24 +5,14 @@ local config			= require("config/base")
 -- Gear
 	local gears			= require("gears")
 -- Awful
-	local awful			= require("awful")
-	awful.rules			= require("awful.rules")
 	require("awful.autofocus")
--- Widget and layout library
-	local wibox			= require("wibox")
 -- Theme handling library
 	local beautiful		= require("beautiful")
 	-- Themes define colours, icons, font and wallpapers.
 	beautiful.init(config.themepath)
--- Notification library
-	local naughty		= require("naughty")
 -- Revelation
 	local revelation	= require("revelation")
 	revelation.init(config.revelation)
--- Vicious
-	local vicious		= require("vicious")
--- Lain
-	local lain			= require("lain")
 -- }}}
 
 -- {{{ Local Modules
@@ -42,8 +32,6 @@ local config			= require("config/base")
 	end
 	-- initial start when rc.lua is first run
 	wp.timer:start()
--- Tags
-	local tags		= require("config/tags") 
 -- Bindings
 	local bindings	= require("config/bindings")
 	root.buttons(bindings.mouse)

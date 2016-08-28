@@ -5,12 +5,10 @@ local tags			= require("config/tags")
 local awful			= require("awful")
 local beautiful		= require("beautiful")
 local gears			= require("gears")
-local naughty		= require("naughty")
 local vicious		= require("vicious")
 local wibox			= require("wibox")
 
 local APW			= require("modules/apw/widget")
-local calendar		= require("modules/calendar35/init")
 local orglendar		= require("modules/orglendar")
 
 local ip			= require("widgets/ip")

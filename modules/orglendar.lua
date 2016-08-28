@@ -60,6 +60,7 @@ local freq_table = {
 }
 
 local calendar = nil
+local events = nil
 local todo = nil
 local offset = 0
 
@@ -67,7 +68,7 @@ local data = { events = nil, todo = nil }
 
 local function pop_spaces(s1, s2, maxsize)
 	local sps = ""
-	for i = 1, maxsize - string.len(s1) - string.len(s2) do
+	for _ = 1, maxsize - string.len(s1) - string.len(s2) do
 		sps = sps .. " "
 	end
 	return s1 .. sps .. s2
@@ -78,9 +79,8 @@ local function strip_time(time_obj)
 	return os.time{day = tbl.day, month = tbl.month, year = tbl.year}
 end
 
-function parse_todo(files)
-	local data = { tasks = {}, dates = {}, maxlen = 20 }
-	local today = os.time()
+local function parse_todo(files)
+	local ldata = { tasks = {}, dates = {}, maxlen = 20 }
 	for _, file in pairs(files) do
 		local fd = io.open(file, "r")
 		if not fd then
@@ -88,14 +88,16 @@ function parse_todo(files)
 		else
 			local head = ""
 			for line in fd:lines() do
-				_, _, task_name = string.find(line, "%*+%s+(.+)")
-				local todo = string.find(line, "%*%* TODO")
+				local task_date = nil
+				local recur = nil
+				local _, _, task_name = string.find(line, "%*+%s+(.+)")
+				local isTodo = string.find(line, "%*%* TODO")
 
 				local headline = string.find(line, "^%* ")
 
 				if headline then
 					_, _, head = string.find(line, "^%* (.+)")
-				elseif todo then
+				elseif isTodo then
 					if task_name then
 						local find_begin, task_start = string.find(task_name, "[A-Z]+%s+")
 						if task_start and find_begin == 1 then
@@ -113,23 +115,24 @@ function parse_todo(files)
 							data.maxlen = len
 						end
 
-						table.insert(data.tasks, { name = task_name,
+						table.insert(ldata.tasks, { name = task_name,
 						tags = task_tags,
 						date = task_date,
 						head = head,
 						recur = recur})
-						data.dates[strip_time(task_date)] = true
+						ldata.dates[strip_time(task_date)] = true
 					end
 				end
 			end
 		end
 	end
-	return data
+	return ldata
 end
 
-function parse_events(files)
-	local data = { tasks = {}, dates = {}, maxlen = 20 }
+local function parse_events(files)
+	local ldata = { tasks = {}, dates = {}, maxlen = 20 }
 	local today = os.time()
+	local task_name = nil
 	for _, file in pairs(files) do
 		local fd = io.open(file, "r")
 		if not fd then
@@ -170,8 +173,8 @@ function parse_events(files)
 						end
 
 						local len = string.len(task_name) + string.len(task_tags)
-						if (len > data.maxlen) and (task_date >= today) then
-							data.maxlen = len
+						if (len > ldata.maxlen) and (task_date >= today) then
+							ldata.maxlen = len
 						end
 
 						if recur ~= "" then
@@ -191,21 +194,21 @@ function parse_events(files)
 							while curr < now do
 								curr = freq_table[freq].next(curr, interval)
 							end
-							for i = 1, freq_table[freq].occur do
-								local curr_date = os.date("*t", curr)
-								table.insert(data.tasks, { name = task_name,
+							for _ = 1, freq_table[freq].occur do
+								--local curr_date = os.date("*t", curr)
+								table.insert(ldata.tasks, { name = task_name,
 								tags = task_tags,
 								date = curr,
 								recur = recur})
-								data.dates[strip_time(curr)] = true
+								ldata.dates[strip_time(curr)] = true
 								curr = freq_table[freq].next(curr, interval)
 							end
 						else
-							table.insert(data.tasks, { name = task_name,
+							table.insert(ldata.tasks, { name = task_name,
 							tags = task_tags,
 							date = task_date,
 							recur = recur})
-							data.dates[strip_time(task_date)] = true
+							ldata.dates[strip_time(task_date)] = true
 						end
 					end
 				end
@@ -213,12 +216,10 @@ function parse_events(files)
 			end
 		end
 	end
-	return data
+	return ldata
 end
 
 function orglendar.parse_agenda()
-
-	local task_name
 	data.events = parse_events(orglendar.files.events)
 	data.todo = parse_todo(orglendar.files.todo)
 	table.sort(data.events.tasks, function (a, b) return a.date < b.date end)
@@ -244,7 +245,7 @@ local function create_calendar()
 	local first_day_in_week =
 	(os.date("%w", first_day) + 6) % 7
 	local result = "<b> Mon  Tue  Wed  Thu  Fri  Sat  Sun</b>\n"
-	for i = 1, first_day_in_week do
+	for _ = 1, first_day_in_week do
 		result = result .. "     "
 	end
 
@@ -283,8 +284,8 @@ end
 local function create_events()
 	local result = ""
 	local maxlen = data.events.maxlen + 3
-	if limit_todo_length and limit_todo_length < maxlen then
-		maxlen = limit_todo_length
+	if orglendar.limit_todo_length and orglendar.limit_todo_length < maxlen then
+		maxlen = orglendar.limit_todo_length
 	end
 	local prev_date, limit, tname
 	for i, task in ipairs(data.events.tasks) do
@@ -316,8 +317,8 @@ end
 local function create_todo()
 	local result = ""
 	local maxlen = data.todo.maxlen + 3
-	if limit_todo_length and limit_todo_length < maxlen then
-		maxlen = limit_todo_length
+	if orglendar.limit_todo_length and orglendar.limit_todo_length < maxlen then
+		maxlen = orglendar.limit_todo_length
 	end
 	local prev_date, prev_head, limit, tname
 	for i, task in ipairs(data.todo.tasks) do
@@ -354,7 +355,7 @@ local function create_todo()
 end
 
 function orglendar.get_calendar_and_todo_text(_offset)
-	if not data.events or parse_on_show then
+	if not data.events or orglendar.parse_on_show then
 		orglendar.parse_agenda()
 	end
 
@@ -364,9 +365,9 @@ function orglendar.get_calendar_and_todo_text(_offset)
 	orglendar.font, orglendar.text_color, header, cal), create_todo()
 end
 
-local function calculate_char_width()
-	return theme.get_font_height(font) * 0.555
-end
+--local function calculate_char_width()
+--	return theme.get_font_height(orglendar.font) * 0.555
+--end
 
 function orglendar.hide()
 	if calendar ~= nil then
@@ -381,7 +382,7 @@ end
 function orglendar.show(inc_offset)
 	inc_offset = inc_offset or 0
 
-	if not data.events or parse_on_show then
+	if not data.events or orglendar.parse_on_show then
 		orglendar.parse_agenda()
 	end
 
@@ -389,7 +390,7 @@ function orglendar.show(inc_offset)
 	orglendar.hide()
 	offset = save_offset + inc_offset
 
-	local char_width = char_width or calculate_char_width()
+	--local char_width = orglendar.char_width or calculate_char_width()
 	local header, cal_text = create_calendar()
 	calendar = naughty.notify({
 		text = header .. "\n\n" .. cal_text,

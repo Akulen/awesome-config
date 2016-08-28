@@ -33,7 +33,7 @@ end)
 
 -- Change GRUB background at boot
 
-grub_bg = math.random(1, #wp.files)
+local grub_bg = math.random(1, #wp.files)
 awful.spawn.with_shell("convert " .. wp.config.path .. wp.files[grub_bg] .. " /boot/grub/themes/SteamBP/background.png")
 
 return wp
