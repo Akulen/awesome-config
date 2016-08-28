@@ -32,10 +32,12 @@ local config			= require("config/base")
 	end
 	-- initial start when rc.lua is first run
 	wp.timer:start()
+-- Wibars
+	local wibars	= require("config/wibars")
 -- Bindings
 	local bindings	= require("config/bindings")
 	root.buttons(bindings.mouse)
-	root.keys(bindings.globalkeys)
+	root.keys(wibars.music:append_global_keys(bindings.globalkeys))
 -- Signals
 	require("config/signals")
 -- }}}

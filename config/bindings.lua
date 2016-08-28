@@ -213,6 +213,7 @@ bindings.globalkeys		= awful.util.table.join(
 				wibars.promptbox[mouse.screen.index]:run()
 			end,
 			"Prompt for a command"),
+		awful.key({config.modkey,          }, "Pause", wibars.music:command_playpause(), "Play/Pause"),
 		awful.key({config.modkey,          }, "x",
 			function ()
 				awful.prompt.run(
