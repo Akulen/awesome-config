@@ -1,6 +1,9 @@
 local awful			= require("awful")
+local beautiful     = require("beautiful")
 local gears			= require("gears")
 local lain			= require("lain")
+
+local bindings      = {client = require("config/clientbindings")}
 
 --package.path = package.path .. ";/home/akulen/.config/awesome/modules/?.lua"
 --package.path = package.path .. ";/home/akulen/.config/awesome/modules/?/init.lua"
@@ -10,7 +13,7 @@ local tyrannical
 awful.client.property.persist("startup", "boolean")
 awful.client.property.persist("disp", "string")
 
-local tags = {}
+local tags = { properties = {} }
 
 if (#client.get() > 1 and client.get()[1].startup) then
 	tyrannical = require("tyrannical")
@@ -18,6 +21,9 @@ else
 	gears.timer.delayed_call(function() 
 		tyrannical	= require("tyrannical")
 		tyrannical.tags = tags.tags
+		for prop, _ in pairs(tags.properties) do
+			tyrannical.properties[prop] = tags.properties[prop]
+		end
 
 		for _, c in ipairs(client.get()) do
 			c:tags({c.screen.tags[11]})
@@ -35,6 +41,33 @@ else
 		end
 	end)
 end
+
+awful.rules.rules = {
+	{ -- All clients will match this rule.
+		rule       = {},
+		properties = {
+			border_width     = beautiful.border_width,
+			border_color     = beautiful.border_normal,
+			focus            = awful.client.focus.filter,
+			raise            = true,
+			keys             = bindings.client.keys,
+			size_hints_honor = false,
+			buttons          = bindings.client.buttons,
+		},
+	},
+	{
+		rule       = {class    = "Gimp"},
+		except_any = {role     = {"gimp-image-window", "gimp-file-open"}},
+		properties = {floating = false},
+		callback   = awful.client.setslave,
+	},
+	{
+		rule     = {class = "Gimp"},
+		callback = function(c)
+			c.screen.selected_tag.layout = lain.layout.centerworkd
+		end,
+	},
+}
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 tags.layouts	=
@@ -127,15 +160,22 @@ tags.tags = {
 	},
 	{
 		name        = "Extras",
-		init        = not(#client == 0),
+		init        = not(#client.get() == 0),
 		layout      = tags.layouts[1],
 		volatile    = true,
 		fallback    = true,
 	},
 }
 
+tags.properties.floating = {
+    "MPlayer",
+}
+
 if (#client.get() > 1 and client.get()[1].startup) then
-	tyrannical.tags = tags.tags
+	tyrannical.tags       = tags.tags
+	for prop, _ in pairs(tags.properties) do
+		tyrannical.properties[prop] = tags.properties[prop]
+	end
 end
 
 --tags.tags	= {}

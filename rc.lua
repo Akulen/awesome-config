@@ -28,8 +28,6 @@ local config			= require("config/base")
 -- {{{ Local Modules
 -- Check errors
 	require("modules/errors")
--- Key Documentation
-	require("modules/keydoc")
 -- Sound library
 	local APW			= require("modules/apw/widget")
 	APWTimer = gears.timer({ timeout = 0.5 }) -- set update interval in s
@@ -50,57 +48,6 @@ local config			= require("config/base")
 	local bindings	= require("config/bindings")
 	root.buttons(bindings.mouse)
 	root.keys(bindings.globalkeys)
--- }}}
-
--- {{{ Rules
--- Rules to apply to new clients (through the "manage" signal).
-awful.rules.rules	= {
-	{ -- All clients will match this rule.
-		rule		= {},
-		properties	= {
-			border_width		= beautiful.border_width,
-			border_color		= beautiful.border_normal,
-			focus				= awful.client.focus.filter,
-			raise				= true,
-			keys				= bindings.clientkeys,
-			size_hints_honor	= false,
-			buttons				= bindings.clientbuttons
-		}
-	},
-	--{
-	--	rule		= {class	= "MPlayer"},
-	--	properties	= {floating	= true}
-	--},
-	--{	rule		= {class	= "pinentry"},
-	--	properties	= {floating	= true}
-  	--},
-	--{	rule		= {class	= "Gimp"},
-	--	except_any	= {role		= {"gimp-image-window", "gimp-file-open"}},
-	--	properties	= {floating	= false},
-	--	callback	= awful.client.setslave
-	--},
-	--{	rule		= {class	= "Gimp"},
-	--	callback	= function (c) 
-	--		c.first_tag.layout = lain.layout.centerworkd
-	--	end
-	--},
-	---- Set Vivaldi to always map on tags number 1 of screen 1.
-	--{	rule		= {class	= config.browser},
-	--	properties	= {tag		= tags.tags[1][1][1]}
-	--},
-	--{	rule		= {class	= "Skype"},
-	--	properties	= {tag		= tags.tags[1][1][2]}
-	--},
-	--{	rule		= {class	= "Skype", name = "rigauto - Skype™"},
-	--	properties	= {floating	= true}
-	--},
-	--{	rule		= {class	= "discord"},
-	--	properties	= {tag		= tags.tags[1][1][2]}
-	--},
-	--{	rule		= {class	= "Clementine"},
-	--	properties	= {tag		= tags.tags[1][1][10]}
-	--},
-}
 -- }}}
 
 -- {{{ Signals
