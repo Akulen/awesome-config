@@ -187,9 +187,3 @@ client.connect_signal("unfocus",
 	end
 )
 -- }}}
-
--- Startup command /!\ MOVE TO .xinitrc
-
-awful.spawn.with_shell("setxkbmap -option compose:ralt")
-awful.spawn.with_shell("xcompmgr -C -f -D 3")
-awful.spawn("xmodmap /home/akulen/.Xmodmap")
