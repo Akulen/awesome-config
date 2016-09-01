@@ -41,49 +41,49 @@ wibars.taglist.buttons 		= awful.util.table.join(
 wibars.promptbox			= {}
 wibars.infobar			= {}
 
-wibars.music = awesompd:create() -- Create awesompd widget
-wibars.music.font = config.font
-wibars.music.scrolling = true -- If true, the text in the widget will be scrolled
-wibars.music.output_size = 30 -- Set the size of widget in symbols
-wibars.music.update_interval = 10 -- Set the update interval in seconds
-wibars.music.path_to_icons = config.home .. "/.config/awesome/awesompd/icons" 
+wibars.music                        = awesompd:create() -- Create awesompd widget
+wibars.music.font                   = config.font
+wibars.music.scrolling              = true -- If true, the text in the widget will be scrolled
+wibars.music.output_size            = 30 -- Set the size of widget in symbols
+wibars.music.update_interval        = 10 -- Set the update interval in seconds
+wibars.music.path_to_icons          = config.home .. "/.config/awesome/widgets/awesompd/icons"
 -- Set the default music format for Jamendo streams. You can change
 -- this option on the fly in awesompd itself.
 -- possible formats: awesompd.FORMAT_MP3, awesompd.FORMAT_OGG
-wibars.music.jamendo_format = awesompd.FORMAT_MP3
+wibars.music.jamendo_format         = awesompd.FORMAT_MP3
 -- If true, song notifications for Jamendo tracks and local tracks will also contain
 -- album cover image.
-wibars.music.show_album_cover = true
+wibars.music.show_album_cover       = true
 -- Specify how big in pixels should an album cover be. Maximum value
 -- is 100.
-wibars.music.album_cover_size = 50
+wibars.music.album_cover_size       = 50
 -- This option is necessary if you want the album covers to be shown
 -- for your local tracks.
-wibars.music.mpd_config = config.home .. "/.mpd/mpd.conf"
+wibars.music.mpd_config             = config.home .. "/.mpd/mpd.conf"
 -- Specify the browser you use so awesompd can open links from
 -- Jamendo in it.
-wibars.music.browser = config.browser
+wibars.music.browser                = config.browser
 -- Specify decorators on the left and the right side of the
 -- widget. Or just leave empty strings if you decorate the widget
 -- from outside.
-wibars.music.ldecorator = " "
-wibars.music.rdecorator = " "
+wibars.music.ldecorator             = " "
+wibars.music.rdecorator             = " "
 -- Set all the servers to work with (here can be any servers you use)
-wibars.music.servers = {
-	{ server = "localhost",
-	port = 6600 }, }
+wibars.music.servers                = {
+	{                               server = "localhost",
+	port                            = 6600 }, }
 	-- Set the buttons of the widget
 	wibars.music:register_buttons({ { "", awesompd.MOUSE_LEFT, wibars.music:command_playpause() },
-	{ "Control", awesompd.MOUSE_SCROLL_UP, wibars.music:command_prev_track() },
-	{ "Control", awesompd.MOUSE_SCROLL_DOWN, wibars.music:command_next_track() },
-	{ "", awesompd.MOUSE_SCROLL_UP, wibars.music:command_volume_up() },
-	{ "", awesompd.MOUSE_SCROLL_DOWN, wibars.music:command_volume_down() },
-	{ "", awesompd.MOUSE_RIGHT, wibars.music:command_show_menu() },
+	{                               "Control", awesompd.MOUSE_SCROLL_UP, wibars.music:command_prev_track() },
+	{                               "Control", awesompd.MOUSE_SCROLL_DOWN, wibars.music:command_next_track() },
+	{                               "", awesompd.MOUSE_SCROLL_UP, wibars.music:command_volume_up() },
+	{                               "", awesompd.MOUSE_SCROLL_DOWN, wibars.music:command_volume_down() },
+	{                               "", awesompd.MOUSE_RIGHT, wibars.music:command_show_menu() },
 	--{ "", "XF86AudioLowerVolume", wibars.music:command_volume_down() },
 	--{ "", "XF86AudioRaiseVolume", wibars.music:command_volume_up() },
-	{ config.modkey, "Pause", wibars.music:command_playpause() }
+	{                               config.modkey, "Pause", wibars.music:command_playpause() }
 })
-wibars.music:run() -- After all configuration is done, run the widget
+wibars.music:run()                  -- After all configuration is done, run the widget
 
 for s = 1, screen.count() do
 	wibars.promptbox[s]	= awful.widget.prompt()
