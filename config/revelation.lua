@@ -1,3 +1,0 @@
-local revelation	= {}
-
-return revelation

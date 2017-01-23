@@ -1,6 +1,6 @@
 local config		= require("config/base")
 local menu			= require("config/menu")
-local tags			= require("config/tags")
+--local tags			= require("config/tags")
 
 local awful			= require("awful")
 local beautiful		= require("beautiful")
@@ -9,7 +9,7 @@ local vicious		= require("vicious")
 local wibox			= require("wibox")
 
 local APW			= require("modules/apw/widget")
-local orglendar		= require("modules/orglendar")
+--local orglendar		= require("modules/orglendar")
 
 local awesompd		= require("widgets/awesompd/awesompd")
 local ip			= require("widgets/ip")
@@ -114,8 +114,8 @@ for s = 1, screen.count() do
 				wibars.cpuicon,
 				{
 					-- Battery widget for portable computer
-					-- vicious	= {vicious.widgets.bat, "$1$2", 10, "BAT0"},
-					vicious	= {vicious.widgets.cpu, "$1%", 5},
+					vicious	= {vicious.widgets.bat, "$1$2", 10, "BAT0"},
+					--vicious	= {vicious.widgets.cpu, "$1%", 5},
 					font	= config.font,
 					widget	= wibox.widget.textbox
 				},
@@ -191,10 +191,10 @@ for s = 1, screen.count() do
 	}
 	
 	awful.widget.layoutbox(s):buttons(awful.util.table.join(
-		awful.button({ }, 1, function () awful.layout.inc(tags.layouts, 1) end),
-		awful.button({ }, 3, function () awful.layout.inc(tags.layouts, -1) end),
-		awful.button({ }, 4, function () awful.layout.inc(tags.layouts, 1) end),
-		awful.button({ }, 5, function () awful.layout.inc(tags.layouts, -1) end)
+		--awful.button({ }, 1, function () awful.layout.inc(tags.layouts, 1) end),
+		--awful.button({ }, 3, function () awful.layout.inc(tags.layouts, -1) end),
+		--awful.button({ }, 4, function () awful.layout.inc(tags.layouts, 1) end),
+		--awful.button({ }, 5, function () awful.layout.inc(tags.layouts, -1) end)
 	))
 
 	wibars.wibar_top[s]	= awful.wibar({ position = "top", screen = s, bg = "#002b3600" })
@@ -237,11 +237,11 @@ for s = 1, screen.count() do
 	wibars.wibar_top[s].topbar:inc_ratio(2, 0.3)
 	--calendar.addCalendarToWidget(wibars.wibar_top[s]:get_children_by_id("datewidget")[1])
 
-	orglendar.files = { -- Specify here all files you want to be parsed, separated by comma.
-		events = { config.home .. "/events.org" },
-		todo = { config.home .. "/todo.org" },
-	}
-	orglendar.register(wibars.wibar_top[s]:get_children_by_id("datewidget")[1])
+	--orglendar.files = { -- Specify here all files you want to be parsed, separated by comma.
+	--	events = { config.home .. "/events.org" },
+	--	todo = { config.home .. "/todo.org" },
+	--}
+	--orglendar.register(wibars.wibar_top[s]:get_children_by_id("datewidget")[1])
 end
 -- }
 
@@ -256,7 +256,7 @@ wibars.tasklist.buttons	= awful.util.table.join(
 			else
 				-- Without this, the following :isvisible() makes no sense
 				c.minimized = false
-				if not c:isvisible() then awful.tag.viewonly(c:tags()[1][1]) end
+				--if not c:isvisible() then awful.tag.viewonly(c:tags()[1][1]) end
 				-- This will also un-minimize the client, if needed
 				client.focus = c
 				c:raise()

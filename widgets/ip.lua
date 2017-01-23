@@ -14,7 +14,7 @@ local ip = {}
 
 -- {{{ IP widget type
 local function worker(format, warg)
-	local f = assert(io.popen("ip addr show enp9s0", 'r'))
+	local f = assert(io.popen("ip addr show wlp3s0", 'r'))
 	local s = assert(f:read('*a'))
 	f:close()
 	local ipadd = string.match(s, "inet ([^/]*)/")
