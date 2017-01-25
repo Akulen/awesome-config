@@ -1,7 +1,6 @@
 local config           = {}
 
---TODO
---config.revelation = require("config/revelation")
+config.revelation      = {}
 
 config.modkey          = "Mod4"
 

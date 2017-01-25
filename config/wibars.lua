@@ -47,7 +47,6 @@ wibars.taglist_buttons = awful.util.table.join(
             awful.tag.viewprev(t.screen)
         end)
 )
--- TODO
 wibars.tasklist_buttons = awful.util.table.join(
     awful.button({             }, 1,
         function (c)
@@ -130,8 +129,6 @@ wibars.screens = {}
 
 awful.screen.connect_for_each_screen(function(s)
     wibars.screens[s]                 = {}
-
-    -- TODO wallpaper
 
     -- { Top Wibar
     wibars.screens[s].promptbox       = awful.widget.prompt()

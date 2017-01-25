@@ -1,4 +1,5 @@
 local config        = require("config/base")
+local wp            = require("modules/wallpaper")
 
 local awful         = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
@@ -10,7 +11,6 @@ local ror           = require("modules/aweror")
 local tags          = require("config/tags")
 local utils         = require("modules/utils")
 local wibars        = require("config/wibars")
-local wp            = require("modules/wallpaper")
 
 local bindings      = {client = require("config/clientbindings")}
 
@@ -43,26 +43,29 @@ bindings.globalkeys = awful.util.table.join(
         {description = "view next", group = "Tag management"}),
     awful.key({config.modkey,          }, "Escape", awful.tag.history.restore,
         {description = "go back", group = "Tag management"}),
-    --awful.key({config.modkey,          }, "e",
-    --    function()
-    --        revelation({rule = {class = config.Terminal}})
-    --    end,
-    --    "Revelation"),
-    --awful.key({config.modkey,          }, "b",
-    --    function()
-    --        wp.timer:emit_signal("timeout")
-    --    end,
-    --    "Swap Wallpaper"),
-    --awful.key({config.modkey, "Shift"  }, "b",
-    --    function ()
-    --        if wp.config.freeze == false then
-    --            wp.timer:stop()
-    --        else
-    --            wp.timer:start()
-    --        end
-    --        wp.config.freeze = not wp.config.freeze
-    --    end,
-    --    "Freeze Wallpaper swapper"),
+    awful.key({config.modkey,          }, "e",
+        function()
+            revelation({rule = {class = config.Terminal}})
+        end,
+        {description = "revelation for terminals", group = "Tag management"}),
+    awful.key({config.modkey,          }, "b",
+        function()
+            wp.timer[awful.screen.focused()]:emit_signal("timeout")
+        end,
+        {description = "swap wallpaper of focused screen", group = "Misc"}),
+    awful.key({config.modkey, "Shift"  }, "b",
+        function ()
+            local s = awful.screen.focused()
+            if wp.config.freeze[s] == false then
+                wp.timer[s]:stop()
+            else
+                wp.timer[s]:start()
+            end
+            wp.config.freeze[s] = not wp.config.freeze[s]
+        end,
+        {description = "freeze wallpaper swapper of focused screen", group = "Misc"}),
+    awful.key({config.modkey, "Control"}, "b", wp.reload,
+        {description = "reload wallpapers", group = "Misc"}),
 
     awful.key({config.modkey,          }, "j",
         function ()
@@ -220,20 +223,17 @@ bindings.globalkeys = awful.util.table.join(
     -- Prompt
     awful.key({config.modkey,          }, "r",
         function ()
-            -- TODO
-            wibars.promptbox[mouse.screen.index]:run()
+            wibars.screens[awful.screen.focused()].promptbox:run()
         end,
         {description = "prompt for a command", group = "Misc"}),
     awful.key({config.modkey,          }, "x",
         function ()
-            -- TODO
-            awful.prompt.run(
-                {prompt = "Run Lua code: "},
-                wibars.promptbox[mouse.screen.index].widget,
-                awful.util.eval,
-                nil,
-                awful.util.getdir("cache") .. "/history_eval"
-            )
+            awful.prompt.run {
+                prompt       = "Run Lua code: ",
+                textbox      = wibars.screens[awful.screen.focused()].promptbox.widget,
+                exe_callback = awful.util.eval,
+                history_path = awful.util.get_cache_dir() .. "/history_eval"
+            }
         end,
         {description = "lua execute prompt", group = "Misc"}),
     -- Menubar
@@ -267,7 +267,7 @@ for i = 1, 10 do
                     tag:view_only()
                 end
             end,
-            {description = "view tag #" .. i, group = "Tag"}),
+            {description = "view tag #" .. (i % 10), group = "Tag"}),
         -- Toggle tag.
         awful.key({config.modkey, "Control"}, "#" .. i + 9,
             function ()
@@ -277,7 +277,7 @@ for i = 1, 10 do
                     awful.tag.viewtoggle(tag)
                 end
             end,
-            {description = "toggle tag #" .. i, group = "Tag"}),
+            {description = "toggle tag #" .. (i % 10), group = "Tag"}),
         -- Move client to tag.
         awful.key({config.modkey, "Shift"  }, "#" .. i + 9,
             function ()
@@ -288,7 +288,7 @@ for i = 1, 10 do
                     end
                 end
             end,
-            {description = "move focused client to tag #" .. i, group = "Tag"}),
+            {description = "move focused client to tag #" .. (i % 10), group = "Tag"}),
         -- Toggle tag.
         awful.key({config.modkey, "Control", "Shift"}, "#" .. i + 9,
             function ()
@@ -299,7 +299,7 @@ for i = 1, 10 do
                     end
                 end
             end,
-            {description = "toggle focused client on tag #" .. i, group = "Tag"})
+            {description = "toggle focused client on tag #" .. (i % 10), group = "Tag"})
     )
 end
 

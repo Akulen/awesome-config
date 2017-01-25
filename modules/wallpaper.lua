@@ -7,18 +7,21 @@ local wp  = {}
 wp.config = require("config/wallpaper")
 
 wp.files  = {}
--- TODO : add a key binding to reload wallpaper list
-for f in io.popen("ls " .. wp.config.path):lines() do
-	table.insert(wp.files, f)
-end
 wp.index  = {}
 wp.timer  = {}
 
+wp.reload = function()
+    for f in io.popen("ls " .. wp.config.path):lines() do
+    	table.insert(wp.files, f)
+    end
+end
 wp.change = function(s)
     wp.index[s]     = math.random( 1, #wp.files)
     local wallpaper = wp.config.path .. wp.files[wp.index[s]]
     gears.wallpaper.maximized(wallpaper, s, true)
 end
+
+wp.reload()
 
 awful.screen.connect_for_each_screen(function(s)
     -- setup the timer
