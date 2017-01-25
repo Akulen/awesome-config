@@ -56,7 +56,7 @@ tags.layouts	=
 	awful.layout.suit.max.fullscreen,
 	awful.layout.suit.magnifier,
     awful.layout.suit.corner.nw,
-	--lain.layout.cascade,
+	lain.layout.cascade,
 	awful.layout.suit.floating
 }
 
@@ -70,7 +70,7 @@ tags.tags = {
 		init        = true,
 		exclusive   = true,                   -- Refuse any other type of clients (by classes)
 		screen      = screens,
-		layout      = tags.layouts[1], --lain.layout.cascade,
+		layout      = lain.layout.cascade,
 		class       = {"vivaldi-snapshot"},
 		selected    = true
 	},
