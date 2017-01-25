@@ -172,23 +172,23 @@ theme.icon_theme	= nil
 
 theme.fg_widget_clock			= "#B58900"
 theme.fg_widget_value			= "#E0E0D1"
-theme.fg_widget_value_important	= "#CB4B16"
+theme.fg_widget_value_important = "#CB4B16"
 
-theme.lain_icons				= "/usr/share/awesome/lib/lain/icons/layout/zenburn/"
-theme.layout_uselesstile		= theme.default_themes_path .. "/zenburn/layouts/tile.png"
-theme.layout_uselesstileleft	= theme.default_themes_path .. "/zenburn/layouts/tileleft.png"
-theme.layout_uselesstilebottom	= theme.default_themes_path .. "/zenburn/layouts/tilebottom.png"
-theme.layout_uselesstiletop		= theme.default_themes_path .. "/zenburn/layouts/tiletop.png"
-theme.layout_uselesspiral		= theme.default_themes_path .. "/zenburn/layouts/spiral.png"
-theme.layout_uselessfair		= theme.lain_icons .. "termfair.png"
-theme.layout_uselessfairh		= theme.lain_icons .. "termfair.png"
-theme.layout_termfair			= theme.lain_icons .. "termfairw.png"
-theme.layout_centerfair			= theme.lain_icons .. "centerfair.png"
-theme.layout_cascade			= theme.lain_icons .. "cascade.png"
-theme.layout_cascadetile		= theme.lain_icons .. "cascadetilew.png"
-theme.layout_centerwork			= theme.lain_icons .. "centerwork.png"
-theme.layout_centerworkd		= theme.lain_icons .. "centerwork.png"
+theme.lain_icons                = "/usr/share/awesome/lib/lain/icons/layout/zenburn/"
+theme.layout_uselesstile        = theme.default_themes_path .. "/zenburn/layouts/tile.png"
+theme.layout_uselesstileleft    = theme.default_themes_path .. "/zenburn/layouts/tileleft.png"
+theme.layout_uselesstilebottom  = theme.default_themes_path .. "/zenburn/layouts/tilebottom.png"
+theme.layout_uselesstiletop     = theme.default_themes_path .. "/zenburn/layouts/tiletop.png"
+theme.layout_uselesspiral       = theme.default_themes_path .. "/zenburn/layouts/spiral.png"
+theme.layout_uselessfair        = theme.lain_icons .. "termfair.png"
+theme.layout_uselessfairh       = theme.lain_icons .. "termfair.png"
+theme.layout_termfair           = theme.lain_icons .. "termfairw.png"
+theme.layout_centerfair         = theme.lain_icons .. "centerfair.png"
+theme.layout_cascade            = theme.lain_icons .. "cascade.png"
+theme.layout_cascadetile        = theme.lain_icons .. "cascadetilew.png"
+theme.layout_centerwork         = theme.lain_icons .. "centerwork.png"
+theme.layout_centerworkd        = theme.lain_icons .. "centerwork.png"
 
-theme.useless_gap_width	= 20
+theme.useless_gap               = 10
 
 return theme
