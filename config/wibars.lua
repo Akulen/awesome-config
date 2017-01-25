@@ -6,6 +6,7 @@ local beautiful = require("beautiful")
 local gears     = require("gears")
 local vicious   = require("vicious")
 local wibox     = require("wibox")
+local tags      = require("config/tags")
 
 local APW       = require("modules/apw/widget")
 local orglendar = require("modules/orglendar")
@@ -131,8 +132,6 @@ awful.screen.connect_for_each_screen(function(s)
     wibars.screens[s]                 = {}
 
     -- TODO wallpaper
-
-    local tags                        = require("config/tags")
 
     -- { Top Wibar
     wibars.screens[s].promptbox       = awful.widget.prompt()
